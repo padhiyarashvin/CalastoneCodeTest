@@ -11,45 +11,17 @@ namespace CalastoneCodeTest
 {
     internal class Program
     {
-        static readonly char[] SpecialChar = new char[] { '\n', '\r', '!', '(', ')', '"', ':', '?', ':', ';', '\'', '@', '.', ',', '`' };
-
         static void Main(string[] args)
         {
-            List<string> wordsResult = GetWordListFromFile();
-            //ReadFile(wordsResult);
-
-            List<IWordFilters> filterList = GetWordFilters();
-
-            foreach (var filter in filterList)
-            {
-                wordsResult = filter.ApplyFilter(wordsResult);
-            }
-
+            TextFilters textFilters = new TextFilters();
+            var wordsResult = textFilters.GetFilteredWords();
+            
             foreach (string word in wordsResult)
             {
-                Console.Write(word + '-');
+                Console.WriteLine(word);
             }
+
             Console.ReadLine();
-        }
-
-        private static List<string> GetWordListFromFile()
-        {
-            string textFile = @"D:\WorkSpace\Calastone\CalastoneCodeTest\CalastoneCodeTest\Files\TextInput.txt";
-
-            string fileData = File.ReadAllText(textFile);
-            fileData = fileData.ReplaceAll(SpecialChar, ' ');
-
-            return fileData.Split(' ').Where(x => x != string.Empty).ToList<string>();
-        }
-
-        private static List<IWordFilters> GetWordFilters()
-        {
-            return new List<IWordFilters>()
-            {
-                new VowelFilter(),
-                new LessThan3WordFilter(),
-                new RemoveTWordFilter()
-            };
-        }
+        }        
     }
 }
